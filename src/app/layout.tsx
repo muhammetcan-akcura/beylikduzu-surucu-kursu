@@ -31,6 +31,9 @@ export const metadata: Metadata = {
   formatDetection: { telephone: false, email: false, address: false },
   openGraph: { locale: "tr_TR", type: "website", siteName: site.brandName },
   twitter: { card: "summary_large_image" },
+  verification: {
+    google: "R-HIoyT2EbNTzCYo5RXrHDhqUi-n9Z1Bv7RuVTk4y-Q",
+  },
   // Demo süresince arama motorlarına kapalı tutmak için: robots: { index: false }
 };
 
