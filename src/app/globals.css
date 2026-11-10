@@ -1,0 +1,476 @@
+@import "tailwindcss";
+
+/* =========================================================================
+   TASARIM TOKEN'LARI — Konsept "Şerit" — asfalt + beton + yol çizgisi sarısı · Archivo dar/geniş
+   Kontrast oranları CLAUDE.md ve /styleguide'da tablo halinde.
+   ========================================================================= */
+
+@theme {
+  /* ---- Renk: anlamsal isimler ---- */
+  --color-*: initial;
+  --color-ink: #14171c; /* ana metin, koyu yüzey (asfalt) */
+  --color-ink-2: #1f242b; /* koyu bölümlerde ikinci katman */
+  --color-surface: #ffffff; /* sayfa zemini (beyaz) */
+  --color-surface-2: #eef0f2; /* sakin bölüm zemini (beton grisi) */
+  --color-raised: #f7f8f9; /* kart / form yüzeyi */
+  --color-white: #ffffff;
+  --color-graphite: #3d434b; /* ikincil metin */
+  --color-muted: #5a616a; /* yardımcı metin, caption */
+  --color-line: #dde1e5; /* ayraç (dekoratif, metin değil) */
+  --color-line-strong: #80878f; /* form kenarlığı (≥3:1 UI) */
+  --color-accent: #f2c230; /* yol çizgisi sarısı: CTA zemini, koyu zeminde vurgu. AÇIK ZEMİNDE METİN/İNCE ÇİZGİ DEĞİL */
+  --color-accent-hover: #e0b01c;
+  --color-accent-ink: #6e5200; /* açık zeminde sarı aileden metin */
+  --color-on-ink: #f4f5f6; /* koyu zeminde metin */
+  --color-on-ink-muted: #a3abb5; /* koyu zeminde ikincil metin */
+  --color-accent-soft: #fdf3cf; /* açık sarı yüzey (ink metinle ~17:1) */
+  --color-whatsapp: #1d6e46; /* beyaz metinle 6.23:1 */
+  --color-whatsapp-hover: #175a39;
+  --color-whatsapp-bright: #5bd08d; /* koyu zeminde WhatsApp ikonu (asfaltta 9.6:1) */
+  --color-danger: #a3362a;
+  --color-danger-surface: #f6e4df;
+  --color-success: #2c6a44;
+  --color-success-surface: #e2eee5;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  /* ---- Font ailesi: Archivo (değişken, wdth 62–125 · wght 100–900) ----
+     Tek aile, iki uç: başlıklar DAR + kalın (font-display), etiketler GENİŞ (font-wide). */
+  --font-display: var(--font-archivo), "Arial Narrow", system-ui, sans-serif;
+  --font-sans: var(--font-archivo), system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* ---- Akışkan tipografi ölçeği ---- */
+  --text-display: clamp(2.75rem, 1rem + 7.6vw, 9rem);
+  --text-display--line-height: 0.9;
+  --text-display--letter-spacing: -0.012em;
+  --text-display--font-weight: 800;
+
+  --text-h1: clamp(2.6rem, 1.6rem + 4.6vw, 5.75rem);
+  --text-h1--line-height: 0.9;
+  --text-h1--letter-spacing: -0.01em;
+  --text-h1--font-weight: 800;
+
+  --text-h2: clamp(2.1rem, 1.4rem + 3vw, 4rem);
+  --text-h2--line-height: 0.94;
+  --text-h2--letter-spacing: -0.005em;
+  --text-h2--font-weight: 800;
+
+  --text-h3: clamp(1.2rem, 1.08rem + 0.5vw, 1.45rem);
+  --text-h3--line-height: 1.2;
+  --text-h3--letter-spacing: -0.01em;
+  --text-h3--font-weight: 700;
+
+  --text-lead: clamp(1.125rem, 1.05rem + 0.35vw, 1.3125rem);
+  --text-lead--line-height: 1.5;
+  --text-lead--font-weight: 400;
+
+  --text-body: 1.0625rem; /* 17px — 16px'in altına inmez */
+  --text-body--line-height: 1.6;
+  --text-body--font-weight: 400;
+
+  --text-small: 0.9375rem; /* 15px */
+  --text-small--line-height: 1.5;
+  --text-small--font-weight: 400;
+
+  --text-caption: 0.8125rem; /* 13px */
+  --text-caption--line-height: 1.4;
+  --text-caption--letter-spacing: 0.01em;
+  --text-caption--font-weight: 500;
+
+  --text-eyebrow: 0.75rem;
+  --text-eyebrow--line-height: 1.2;
+  --text-eyebrow--letter-spacing: 0.1em;
+  --text-eyebrow--font-weight: 700;
+
+  --text-button: 0.875rem;
+  --text-button--line-height: 1;
+  --text-button--letter-spacing: 0.06em;
+  --text-button--font-weight: 700;
+
+  /* ---- Spacing: 8px tabanlı ----
+     Tailwind'in 4px birimini koruyoruz (p-2 = 8px, p-4 = 16px ...); yalnızca çift değerler kullanılır.
+     Bölüm ritmi içerik önemine göre üç kademede: */
+  --spacing-section-sm: clamp(3rem, 2rem + 4vw, 5rem); /* 48 → 80 */
+  --spacing-section-md: clamp(4rem, 2.5rem + 6vw, 7rem); /* 64 → 112 */
+  --spacing-section-lg: clamp(5rem, 3rem + 8vw, 10rem); /* 80 → 160 */
+  --spacing-gutter: clamp(1rem, 0.5rem + 2.5vw, 2.5rem); /* 16 → 40 */
+
+  /* ---- Radius ---- */
+  --radius-none: 0;
+  --radius-hairline: 4px; /* görsel, küçük yüzey */
+  --radius-field: 6px; /* input */
+  --radius-control: 8px; /* buton */
+  --radius-card: 14px; /* kart, karo */
+
+  /* ---- Gölge: yalnızca yüzen öğeler ---- */
+  --shadow-header: 0 1px 0 0 var(--color-line);
+  --shadow-sticky: 0 -10px 30px -12px rgb(20 23 28 / 0.35);
+  --shadow-float: 0 18px 40px -18px rgb(20 23 28 / 0.45);
+
+  /* ---- Hareket ---- */
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --container-site: 84rem; /* 1344px */
+  --container-prose: 40rem; /* ~70 karakter */
+}
+
+/* ---------------------------------------------------------------- Temel */
+
+@layer base {
+  /* Tailwind 4 butonlarda imleci "default" bırakır; tıklanabilir her öğede el işareti olsun */
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  summary,
+  label:has(> input[type="checkbox"]),
+  select {
+    cursor: pointer;
+  }
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+  body {
+    background: var(--color-surface);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    font-feature-settings: "kern", "liga", "tnum" 0;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  ::selection {
+    background: var(--color-accent);
+    color: var(--color-ink);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 3px;
+  }
+  .on-ink :focus-visible {
+    outline-color: var(--color-accent);
+  }
+}
+
+/* --------------------------------------------------------- Yardımcılar */
+
+@utility container-site {
+  width: 100%;
+  max-width: var(--container-site);
+  margin-inline: auto;
+  padding-inline: var(--spacing-gutter);
+}
+
+/* Mobilde sabit CTA çubuğu için alt boşluk (çubuk içeriği kapatmasın) */
+@utility pb-sticky-safe {
+  padding-bottom: calc(4.5rem + env(safe-area-inset-bottom));
+  @media (width >= 64rem) {
+    padding-bottom: 0;
+  }
+}
+
+/* [DOĞRULA] işaretleri — demo süresince görünür */
+.verify {
+  display: inline;
+  padding: 0.05em 0.35em;
+  border: 1px dashed var(--color-accent-ink);
+  border-radius: var(--radius-hairline);
+  background: rgb(242 194 48 / 0.18);
+  color: var(--color-accent-ink);
+  font-size: 0.8em;
+  font-weight: 500;
+  white-space: normal;
+}
+.on-ink .verify {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+/* Scroll'da hafif görünme — JS yok, desteklenmiyorsa ya da hareket azaltılmışsa statik */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: reveal-up linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 40%;
+    }
+  }
+}
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(1.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* SSS akordeonu (<details>) */
+details > summary {
+  list-style: none;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
+details[open] .faq-icon {
+  transform: rotate(45deg);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .faq-icon {
+    transition: transform 200ms var(--ease-out-soft);
+  }
+}
+
+/* Uzun metin sayfaları (KVKK, çerez) */
+.prose-legal h2 {
+  font-family: var(--font-display);
+  font-size: var(--text-h3);
+  line-height: 1.25;
+  font-weight: 600;
+  margin-top: 2.5rem;
+  margin-bottom: 0.75rem;
+}
+.prose-legal p,
+.prose-legal li {
+  color: var(--color-graphite);
+  margin-bottom: 0.75rem;
+}
+.prose-legal ul {
+  list-style: disc;
+  padding-left: 1.25rem;
+}
+.prose-legal a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* =========================================================================
+   "ŞERİT" İMZA ÖĞELERİ
+   ========================================================================= */
+
+@layer base {
+  /* Başlıklar: dar, kalın, BÜYÜK HARF. lang="tr" sayesinde i → İ doğru çevrilir.
+     Utility'ler (normal-case, font-*) bunu ezebilir; bu yüzden base katmanında. */
+  .font-display {
+    font-stretch: 75%;
+    text-transform: uppercase;
+    font-weight: 800;
+  }
+  .text-eyebrow,
+  .text-button,
+  .font-wide {
+    font-stretch: 125%;
+    text-transform: uppercase;
+  }
+}
+
+@utility font-cond {
+  font-stretch: 75%;
+}
+@utility font-wide {
+  font-stretch: 125%;
+}
+
+/* İçi boş dev rakam/harf (dekoratif, aria-hidden ile kullanılır) */
+@utility text-outline {
+  color: transparent;
+  -webkit-text-stroke: max(1.5px, 0.018em) var(--color-ink);
+}
+.on-ink .text-outline {
+  -webkit-text-stroke-color: var(--color-accent);
+}
+
+/* Yol çizgisi bandı: kesik şerit. Koyu zeminde sarı, sarı zeminde ink. */
+@utility lane {
+  height: 6px;
+  background: repeating-linear-gradient(90deg, var(--color-accent) 0 56px, transparent 56px 92px);
+}
+@utility lane-ink {
+  height: 6px;
+  background: repeating-linear-gradient(90deg, var(--color-ink) 0 56px, transparent 56px 92px);
+}
+/* Bariyer şeridi (çok az kullanılır: kapanış ve 404) */
+@utility hatch {
+  background: repeating-linear-gradient(-45deg, var(--color-accent) 0 12px, var(--color-ink) 12px 24px);
+}
+
+/* Kesik köşe (levha/plaka kesimi). Odaklanabilir öğelere UYGULANMAZ (outline kırpılır). */
+@utility cut {
+  clip-path: polygon(0 0, calc(100% - var(--cut, 28px)) 0, 100% var(--cut, 28px), 100% 100%, var(--cut, 28px) 100%, 0 calc(100% - var(--cut, 28px)));
+}
+@utility cut-tr {
+  clip-path: polygon(0 0, calc(100% - var(--cut, 22px)) 0, 100% var(--cut, 22px), 100% 100%, 0 100%);
+}
+
+/* Sarı zeminli bölümler */
+.on-accent .verify {
+  color: var(--color-ink);
+  border-color: var(--color-ink);
+  background: rgb(255 255 255 / 0.45);
+}
+
+/* Kayan bant (sınıf şeridi) ve akan yol çizgisi */
+.marquee-track {
+  display: flex;
+  width: max-content;
+}
+.road-flow {
+  background: repeating-linear-gradient(90deg, var(--color-on-ink) 0 40px, transparent 40px 80px);
+  background-size: 80px 100%;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .marquee-track {
+    animation: marquee var(--marquee-duration, 38s) linear infinite;
+  }
+  .marquee:hover .marquee-track,
+  .reel:has(.reel-toggle input:checked) .marquee-track {
+    animation-play-state: paused;
+  }
+  .road-flow {
+    animation: road 1.6s linear infinite;
+  }
+}
+/* Fotoğraf şeridi (PhotoReel): hareket azaltılmışsa elle kaydırılır, kopya satır ve düğme gizlenir */
+@media (prefers-reduced-motion: reduce) {
+  .reel-viewport {
+    overflow-x: auto;
+    padding-inline: var(--spacing-gutter);
+    scroll-snap-type: x proximity;
+  }
+  .reel-viewport li {
+    scroll-snap-align: start;
+  }
+  .reel-viewport [data-dup],
+  .reel-toggle {
+    display: none;
+  }
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes road {
+  to {
+    background-position: -80px 0;
+  }
+}
+
+/* Metin buton: düz alt çizgi → hover'da kesik, akan şerit çizgisi.
+   Açık zeminde ink (sarı ince çizgi açık zeminde kullanılmaz), koyu zeminde sarı. */
+.btn-lane {
+  --lane: currentColor;
+  padding-bottom: 6px;
+  background-image: linear-gradient(90deg, var(--lane) 0 100%);
+  background-size: 100% 2px;
+  background-repeat: no-repeat;
+  background-position: 0 calc(100% - 4px);
+}
+.on-ink .btn-lane {
+  --lane: var(--color-accent);
+}
+.btn-lane:hover,
+.btn-lane:focus-visible {
+  background-image: linear-gradient(90deg, var(--lane) 0 9px, transparent 9px 14px);
+  background-size: 14px 2px;
+  background-repeat: repeat-x;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .btn-lane:hover {
+    animation: lane-flow 0.7s linear infinite;
+  }
+}
+@keyframes lane-flow {
+  to {
+    background-position: 14px calc(100% - 4px);
+  }
+}
+
+/* İkon spinner (Icon name="loader") */
+@media (prefers-reduced-motion: no-preference) {
+  .icon-spin {
+    animation: icon-spin 0.9s linear infinite;
+  }
+}
+@keyframes icon-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Yol şeridindeki eğitim aracı (RoadStrip). Hareket yoksa solda park hâlinde. */
+.road {
+  container-type: inline-size;
+}
+.car-drive {
+  transform: translateX(clamp(12px, 6cqw, 96px));
+}
+.car-wheel {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .car-drive {
+    animation: car-drive 16s linear infinite;
+  }
+  .car-wheel {
+    animation: icon-spin 0.55s linear infinite;
+  }
+  .car-bob {
+    animation: car-bob 0.9s ease-in-out infinite alternate;
+  }
+}
+@keyframes car-drive {
+  from {
+    transform: translateX(-240px);
+  }
+  to {
+    transform: translateX(calc(100cqw + 20px));
+  }
+}
+@keyframes car-bob {
+  to {
+    transform: translateY(-0.75px);
+  }
+}
+
+/* Hero rota haritası (HeroRoute): hareket azaltılmışsa statik katman.
+   Mobilde (<640px) etiketler okunamayacak kadar küçülür → gizlenir; numaralar ve alt yazı kalır. */
+.route-static {
+  display: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .route-moving {
+    display: none;
+  }
+  .route-static {
+    display: inline;
+  }
+}
+@media (max-width: 639px) {
+  .route-label {
+    display: none;
+  }
+}
+
+/* Form kulakçığı (FormTab): sayfada form varsa yerel çapa, yoksa /iletisim#basvuru gösterilir. */
+html:has(#basvuru) .form-tab-global,
+html:not(:has(#basvuru)) .form-tab-local {
+  display: none;
+}
