@@ -74,9 +74,9 @@ export function ClassesSection({ withIntro = true, headingLevel = "h2" }: { with
           </div>
           <Link
             href="/ehliyet-siniflari"
-            className="inline-flex min-h-11 items-center gap-2 text-button text-on-ink underline decoration-accent decoration-[3px] underline-offset-[7px] hover:text-accent"
+            className="inline-flex min-h-11 items-center gap-2 text-button text-on-ink hover:text-accent"
           >
-            Tüm sınıfları karşılaştırın
+            <span className="leading-[1.9] underline decoration-accent decoration-[3px] underline-offset-[5px]">Tüm sınıfları karşılaştırın</span>
           </Link>
         </div>
         {grid}

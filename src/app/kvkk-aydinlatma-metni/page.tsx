@@ -51,13 +51,13 @@ export default function KvkkPage() {
       <p>
         Form verileri, başvurunun kuruma e-posta ile iletilmesi amacıyla e-posta hizmet sağlayıcısına ve barındırma hizmeti
         sağlayıcısına aktarılabilir. Bu sağlayıcıların sunucuları yurt dışında olabilir.{" "}
-        <RichText text="[DOĞRULA: kullanılan sağlayıcılar (ör. Resend, Vercel) ve yurt dışı aktarım dayanağı]" />
+        Site Netlify altyapısında barındırılmaktadır.{" "}
+        <RichText text="[DOĞRULA: e-posta sağlayıcısı ve yurt dışı aktarım dayanağı — hukukçu görüşü]" />
       </p>
 
       <h2>6. Saklama süresi</h2>
       <p>
-        Kayıt olmayan başvurulara ait veriler, dönüş yapılmasından sonra makul bir süre içinde silinir.{" "}
-        <RichText text="[DOĞRULA: saklama süresi]" />
+        Kayıt olmayan başvurulara ait veriler, başvuru tarihinden itibaren en geç 6 ay içinde silinir.
       </p>
 
       <h2>7. Haklarınız (KVKK m.11)</h2>

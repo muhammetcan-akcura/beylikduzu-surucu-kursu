@@ -94,11 +94,14 @@ export default async function LicenseClassPage({ params }: { params: Promise<Par
             <h2 id="fit-title" className="mt-6 font-display text-h2">
               {c.name} kimlere uygun?
             </h2>
-            <ul className="mt-8 border-t border-line-strong/60">
-              {c.suitableFor.map((s) => (
-                <li key={s} className="flex gap-4 border-b border-line-strong/60 py-4">
-                  <Icon name="check" className="mt-1 size-5 shrink-0 text-accent-ink"/>
-                  <span className="text-graphite">
+            {/* Kart ızgarası: kılcal çizgili liste yerine (CLAUDE.md "Yapılmayacaklar") */}
+            <ul className="mt-8 grid gap-3 sm:grid-cols-2">
+              {c.suitableFor.map((s, i) => (
+                <li key={s} className="reveal flex flex-col gap-4 rounded-card bg-surface-2 p-5">
+                  <span aria-hidden="true" className="grid size-10 place-items-center rounded-control bg-ink font-display text-[1.25rem] leading-none text-accent tabular-nums">
+                    {i + 1}
+                  </span>
+                  <span className="font-semibold text-ink">
                     <RichText text={s} />
                   </span>
                 </li>
@@ -108,56 +111,73 @@ export default async function LicenseClassPage({ params }: { params: Promise<Par
         </div>
       </section>
 
-      {c.sections.map((s, i) => (
-        <section
-          key={s.title}
-          id={s.id}
-          aria-labelledby={`sec-${i}`}
-          className={i % 2 === 0 ? "bg-surface-2 py-section-md" : "py-section-md"}
-        >
-          <div className="container-site grid gap-8 lg:grid-cols-12">
-            <div className="lg:col-span-4">
-              {s.eyebrow && <Eyebrow>{s.eyebrow}</Eyebrow>}
-              <h2 id={`sec-${i}`} className="mt-6 font-display text-h2">
-                {s.title}
+      {c.sections.map((s, i) => {
+        // Zemin ritmi: sarı → beton → beyaz (iç sayfa da ana sayfanın enerjisini taşısın)
+        const tone = (["accent", "concrete", "plain"] as const)[i % 3] ?? "plain";
+        const sectionCls = {
+          accent: "on-accent bg-accent text-ink",
+          concrete: "bg-surface-2",
+          plain: "",
+        }[tone];
+        const cardCls = { accent: "bg-ink text-on-ink", concrete: "bg-surface", plain: "bg-surface-2" }[tone];
+        const textCls = tone === "accent" ? "text-ink" : "text-graphite";
+        return (
+          <section key={s.title} id={s.id} aria-labelledby={`sec-${i}`} className={`py-section-md ${sectionCls}`}>
+            <div className="container-site grid gap-8 lg:grid-cols-12">
+              <div className="lg:col-span-5">
+                {s.eyebrow && <Eyebrow tone={tone === "accent" ? "accent" : "light"}>{s.eyebrow}</Eyebrow>}
+                <h2 id={`sec-${i}`} className="mt-6 font-display text-h2">
+                  {s.title}
+                </h2>
+              </div>
+              <div className="space-y-5 lg:col-span-7 lg:col-start-6">
+                {s.paragraphs.map((p) => (
+                  <p key={p} className={`max-w-prose ${textCls}`}>
+                    <RichText text={p} />
+                  </p>
+                ))}
+                {s.bullets && (
+                  <ul className="mt-8 grid gap-3 sm:grid-cols-2">
+                    {s.bullets.map((b) => (
+                      <li key={b} className={`reveal flex gap-3 rounded-card p-5 ${cardCls}`}>
+                        <Icon
+                          name="check"
+                          className={`mt-0.5 size-5 shrink-0 ${tone === "accent" ? "text-accent" : "text-accent-ink"}`}
+                        />
+                        <span className="font-medium">
+                          <RichText text={b} />
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </div>
+          </section>
+        );
+      })}
+
+      {/* Belgeler: asfalt zemin, kilometre taşı kartları */}
+      <section aria-labelledby="docs-title" className="on-ink bg-ink py-section-md text-on-ink">
+        <div className="container-site">
+          <div className="grid gap-6 lg:grid-cols-12 lg:items-end">
+            <div className="lg:col-span-7">
+              <Eyebrow tone="dark">Belgeler</Eyebrow>
+              <h2 id="docs-title" className="mt-6 font-display text-h2">
+                Kayıt için <span className="text-accent">gerekenler</span>
               </h2>
             </div>
-            <div className="space-y-5 lg:col-span-7 lg:col-start-6">
-              {s.paragraphs.map((p) => (
-                <p key={p} className="max-w-prose text-graphite">
-                  <RichText text={p} />
-                </p>
-              ))}
-              {s.bullets && (
-                <ul className="mt-6 border-t border-ink">
-                  {s.bullets.map((b) => (
-                    <li key={b} className="border-b border-line-strong/60 py-4 text-ink">
-                      <RichText text={b} />
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          </div>
-        </section>
-      ))}
-
-      <section aria-labelledby="docs-title" className="container-site py-section-md">
-        <div className="grid gap-10 lg:grid-cols-12">
-          <div className="lg:col-span-4">
-            <Eyebrow>Belgeler</Eyebrow>
-            <h2 id="docs-title" className="mt-6 font-display text-h2">
-              Kayıt için gerekenler
-            </h2>
-            <p className="mt-4 text-small text-muted">
-              Liste genel bilgidir; güncel listeyi kayıtta yazılı olarak veriyoruz. <RichText text="[DOĞRULA: MEB / güncel belge listesi]" />
+            <p className="text-small text-on-ink-muted lg:col-span-4 lg:col-start-9">
+              Liste genel bilgidir; güncel listeyi kayıtta yazılı olarak veriyoruz.
             </p>
           </div>
-          <ol className="lg:col-span-7 lg:col-start-6">
+          <ol className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {c.documents.map((d, i) => (
-              <li key={d} className="flex gap-5 border-b border-line-strong/60 py-5 first:border-t first:border-t-ink">
-                <span className="font-display text-caption tabular-nums text-accent-ink">0{i + 1}</span>
-                <span>
+              <li key={d} className="reveal flex gap-4 rounded-card bg-ink-2 p-5">
+                <span aria-hidden="true" className="grid size-11 shrink-0 place-items-center rounded-control bg-accent font-display text-[1.375rem] leading-none text-ink tabular-nums">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span className="self-center text-on-ink">
                   <RichText text={d} />
                 </span>
               </li>

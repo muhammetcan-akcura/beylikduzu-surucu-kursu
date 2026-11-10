@@ -10,6 +10,7 @@ import { mainNav } from "@/config/navigation";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { StickyCta } from "@/components/layout/StickyCta";
 import { ConsentProvider } from "@/components/consent/ConsentProvider";
+import { CONSENT_STORAGE_KEY } from "@/components/consent/consent-key";
 import { CookieBanner } from "@/components/consent/CookieBanner";
 import { Analytics } from "@/components/consent/Analytics";
 
@@ -46,7 +47,16 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="tr" className={archivo.variable}>
+    <html lang="tr" className={archivo.variable} suppressHydrationWarning>
+      <head>
+        {/* Boyamadan önce: çerez tercihi yoksa <html data-consent="pending">. CSS bununla mobil Ara/WhatsApp
+            çubuğunu onay verilene kadar gizler (önce görünüp sonra kaybolmasın). Anahtar ConsentProvider ile aynı. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{if(!localStorage.getItem("${CONSENT_STORAGE_KEY}"))document.documentElement.dataset.consent="pending"}catch(e){document.documentElement.dataset.consent="pending"}`,
+          }}
+        />
+      </head>
       <body className="pb-sticky-safe">
         <ConsentProvider>
           <SiteHeader nav={mainNav} />

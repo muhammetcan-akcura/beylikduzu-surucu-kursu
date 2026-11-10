@@ -200,8 +200,7 @@ export function SiteFooter() {
       </div>
 
       {/* 4 — Alt bant */}
-      <div aria-hidden="true" className="lane" />
-      <div className="container-site flex flex-col gap-2 py-5 text-caption text-on-ink-muted md:flex-row md:items-center md:justify-between">
+      <div className="container-site flex flex-col gap-2 border-t border-on-ink-muted/20 py-5 text-caption text-on-ink-muted md:flex-row md:items-center md:justify-between">
         <p className="flex items-center gap-2.5">
           <LogoMark tone="mono" className="h-4 w-auto text-on-ink-muted" />
           © {new Date().getFullYear()} {site.legalName}

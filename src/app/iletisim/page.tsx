@@ -47,25 +47,34 @@ export default function ContactPage() {
       <PageIntro
         eyebrow="İletişim"
         title="Arayın, yazın ya da uğrayın."
-        lead="En hızlı yol telefon. Mesai dışında WhatsApp'tan yazabilir ya da formu doldurabilirsiniz; ilk iş saatinde dönüş yapıyoruz."
+        lead="En hızlı yol telefon. Mesai dışında WhatsApp'tan yazabilir ya da formu doldurabilirsiniz; çalışma saatleri içinde dönüş yapıyoruz."
         breadcrumbs={crumbs}
       />
 
-      <section aria-labelledby="contact-title" className="container-site pb-section-md">
+      <section aria-labelledby="contact-title" className="container-site pt-section-sm pb-section-md">
         <h2 id="contact-title" className="sr-only">
           İletişim bilgileri
         </h2>
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-10">
           <div className="lg:col-span-5">
-            <dl className="border-t border-ink">
+            {/* Kartlar: kılcal çizgili satır listesi yerine */}
+            <dl className="grid gap-3">
               {rows.map((r) => (
-                <div key={r.label} className="flex gap-4 border-b border-line-strong/60 py-5">
-                  <Icon name={r.icon} className="mt-1 size-5 shrink-0 text-accent-ink" />
-                  <div>
-                    <dt className="text-eyebrow uppercase text-muted">{r.label}</dt>
-                    <dd className="mt-1.5">
+                <div key={r.label} className="flex items-start gap-4 rounded-card bg-surface-2 p-5">
+                  <span aria-hidden="true" className="grid size-11 shrink-0 place-items-center rounded-control bg-ink text-on-ink [--icon-accent:var(--color-accent)]">
+                    <Icon name={r.icon} className="size-5" />
+                  </span>
+                  <div className="min-w-0">
+                    <dt className="text-eyebrow text-muted">{r.label}</dt>
+                    <dd className="mt-1">
                       {r.href ? (
-                        <a href={r.href} data-track-location="contact" className="font-medium text-ink underline decoration-line-strong underline-offset-4 hover:decoration-ink">
+                        <a
+                          href={r.href}
+                          data-track-location="contact"
+                          className={`inline-flex min-h-11 items-center break-all text-ink underline decoration-line-strong underline-offset-4 hover:decoration-ink ${
+                            r.icon === "phone" ? "font-display text-[2rem] leading-none tabular-nums no-underline hover:underline" : "font-semibold"
+                          }`}
+                        >
                           {r.value}
                         </a>
                       ) : (
@@ -77,7 +86,8 @@ export default function ContactPage() {
                 </div>
               ))}
             </dl>
-            <div className="mt-8 flex flex-wrap gap-3">
+            {/* Mobilde gizli: alttaki sabit Ara/WhatsApp çubuğu (StickyCta, lg:hidden) aynı işi görüyor */}
+            <div className="mt-8 hidden flex-wrap gap-3 lg:flex">
               <ButtonLink href={telHref()} size="lg" trackLocation="contact" icon="phone">
                 Hemen ara
               </ButtonLink>
@@ -106,7 +116,7 @@ export default function ContactPage() {
           <div className="rounded-card bg-ink-2 p-6">
             <h3 className="text-eyebrow text-on-ink-muted">Hizmet bölgesi</h3>
             <p className="mt-3 text-on-ink">
-              {site.address.district}&apos;nün tüm mahallelerinden öğrencimiz var: {neighborhoods.join(", ")}. Ders saatlerini
+              {site.address.district}&apos;nün tüm mahallelerinden başvuru alıyoruz: {neighborhoods.join(", ")}. Ders saatlerini
               ulaşımınızı düşünerek planlıyoruz.
             </p>
           </div>

@@ -56,7 +56,7 @@ export function ProcessRoute({ number = "03", showLink = true }: { number?: stri
               href="/egitim-sureci"
               className="group inline-flex min-h-12 items-center gap-3 rounded-control bg-ink px-5 text-button text-on-ink transition-transform hover:-translate-y-0.5"
             >
-              Süreci ayrıntılı okuyun: belgeler, sınavlar, süreler
+              Süreci ayrıntılı okuyun
               <Icon name="arrow-right" className="size-4 transition-transform group-hover:translate-x-1"/>
             </Link>
           </div>

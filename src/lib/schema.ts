@@ -30,13 +30,16 @@ export function organizationSchema() {
     foundingDate: String(site.foundingYear),
     address: {
       "@type": "PostalAddress",
-      streetAddress: `${site.address.neighborhood}, ${site.address.street}`,
+      // Demo sokak adı Google'a gitmez: yalnızca mahalle yayımlanır (2026-11-10 denetimi K2).
+      streetAddress: site.address.isDemo
+        ? site.address.neighborhood
+        : `${site.address.neighborhood}, ${site.address.street}`,
       addressLocality: site.address.district,
       addressRegion: site.address.city,
       postalCode: site.address.postalCode,
       addressCountry: site.address.country,
     },
-    geo: site.geo ? { "@type": "GeoCoordinates", latitude: site.geo.lat, longitude: site.geo.lng } : undefined,
+    geo: site.geo && !site.geo.isDemo ? { "@type": "GeoCoordinates", latitude: site.geo.lat, longitude: site.geo.lng } : undefined,
     hasMap: site.googleBusinessProfile || undefined,
     openingHoursSpecification: site.openingHours.map((h) => ({
       "@type": "OpeningHoursSpecification",

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useActionState, useEffect, useRef, useState } from "react";
+import { startTransition, useActionState, useEffect, useRef, useState, type FormEvent } from "react";
 import { Icon } from "@/components/ui/Icon";
 import { submitApplication } from "./actions";
 import { classOptions, initialFormState, fieldCls, labelCls, type FieldName } from "./form-schema";
@@ -25,8 +25,6 @@ export function ApplicationForm({ defaultClass, compact = false }: { defaultClas
   const [startedAt, setStartedAt] = useState(0);
   const statusRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
-
-  useEffect(() => setStartedAt(Date.now()), []);
 
   useEffect(() => {
     if (state.status === "success") {
@@ -59,7 +57,22 @@ export function ApplicationForm({ defaultClass, compact = false }: { defaultClas
   }
 
   return (
-    <form ref={formRef} action={action} noValidate className="space-y-5" aria-describedby="form-note">
+    <form
+      ref={formRef}
+      action={action}
+      noValidate
+      className="space-y-5"
+      aria-describedby="form-note"
+      // Süre sayfa açılışından değil, forma ilk dokunuştan sayılır.
+      onFocus={() => setStartedAt((t) => t || Date.now())}
+      // JS varken action'ı elle çağırıyoruz: `action` prop'u React 19'da gönderimden sonra formu sıfırlıyor,
+      // hata dönünce seçilen ehliyet sınıfı "Seçin"e dönüyordu. JS yoksa `action` prop'u yine çalışır.
+      onSubmit={(e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const data = new FormData(e.currentTarget);
+        startTransition(() => action(data));
+      }}
+    >
       <div ref={statusRef} tabIndex={-1} aria-live="polite" className="outline-none">
         {state.status === "error" && state.message && (
           <p role="alert" className="flex items-start gap-2 rounded-field bg-danger-surface px-4 py-3 text-small text-danger">
@@ -164,7 +177,8 @@ export function ApplicationForm({ defaultClass, compact = false }: { defaultClas
       <input type="hidden" name="sourcePath" value={pathname} />
 
       <div>
-        <label className="flex cursor-pointer items-start gap-3">
+        {/* py-3: kutu + etiket satırı birlikte ≥44px dokunma alanı */}
+        <label className="flex cursor-pointer items-start gap-3 py-3">
           <input
             type="checkbox"
             name="kvkk"

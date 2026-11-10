@@ -3,13 +3,14 @@
 Bu dosya her oturumda okunur. Tasarım ve içerik kararlarının tek özetidir.
 
 ## Durum (2026-11-10)
+- Yayın adresi (geçici): https://beyliksurucukursu.netlify.app (`site.ts` `domain`). Kalıcı alan adı gelince orası ve `.env.example` değişir.
 - Kullanıcı "sen karar ver, soru sorma, bitir" dedi. Aşama 1–5 tamamlandı: **demo site çalışıyor ve derleniyor.**
 - Kararlar ve açık sorular: `docs/ACIK-SORULAR.md`. Yeni sorular da oraya yazılır.
 - Diğer belgeler: `docs/01-marka-stratejisi.md`, `docs/03-bilgi-mimarisi.md`, `docs/fotograf-brifingi.md`, `README.md`.
 
 ## Çalışma kuralları
 - Bilinmeyen işletme bilgisi **uydurulmaz**. Yer tutucu biçimi: `[DOĞRULA: ...]`. `RichText` bileşeni bunu sitede kesik çizgili sarı etiket olarak gösterir.
-- Ehliyet mevzuatı (yaş, ders saati, sınav, ücret, belge) ezberden yazılmaz → `[DOĞRULA: MEB / ...]`.
+- Ehliyet mevzuatı (yaş, ders saati, sınav, ücret, belge) ezberden yazılmaz. 2026-11-10'da mevzuat.gov.tr metinlerinden dolduruldu; madde madde kaynak tablosu `docs/ACIK-SORULAR.md` C bölümünde. Yeni mevzuat bilgisi yalnızca resmî metinden ve madde numarasıyla eklenir; harç/ücret tutarı yazılmaz.
 - Boş işletme alanları sitede ve schema'da hiç görünmez. Demo değerler `site.ts` içinde `isDemo` / `// DEMO` ile işaretli.
 - `[DOĞRULA]` içeren SSS cevapları FAQPage schema'sına girmez.
 - Mahalle sayfası (doorway) oluşturulmaz.
@@ -76,23 +77,25 @@ Bu dosya her oturumda okunur. Tasarım ve içerik kararlarının tek özetidir.
 Gölge yalnızca yüzen öğelerde (`shadow-float`, `shadow-sticky`) ve butonların sert alt çizgisinde.
 
 **İmza öğeleri (globals.css):**
-- `RoadStrip` (Typography.tsx): sarı kenarlı asfalt bant + akan kesik çizgi + yolda giden eğitim aracı (`TrainingCar`, `car={false}` ile kapatılır). Hero ve iç sayfa başlıklarının altında. Araç: beyaz hatchback, kapıda logo + "BEYLİK SÜRÜCÜ KURSU", tavanda "SÜRÜCÜ KURSU" levhası; üretici amblemi yok (tescilli marka). Reduced-motion'da solda park hâlinde.
+- `RoadStrip` (Typography.tsx): sarı kenarlı asfalt bant + akan kesik çizgi + yolda giden eğitim aracı (`TrainingCar`, `car={false}` ile kapatılır). Hero ve iç sayfa başlıklarının altında. Araç: beyaz hatchback, kapıda logo + "BEYLİK SÜRÜCÜ KURSU", tavanda "SÜRÜCÜ KURSU" levhası; üretici amblemi yok (tescilli marka). `.road` yatayda kırpar (`overflow-x: clip`), sayfa yana taşmaz.
 - `.lane` / `.lane-ink`: kesik şerit bandı. `.hatch`: bariyer şeridi (yalnızca kapanış).
 - `text-outline`: içi boş dev harf/rakam (dekoratif, `aria-hidden`). Koyu zeminde sarı çizgi.
-- `ClassTicker`: sarı kayan sınıf bandı (dekoratif, `aria-hidden`, reduced-motion'da durur).
+- `ClassTicker`: sarı kayan sınıf bandı (dekoratif, `aria-hidden`).
 - Kilometre taşı: asfalt kare içinde sarı numara (süreç adımları).
 
 **Bölüm zeminleri:** Ritim: asfalt (`on-ink bg-ink`) → sarı (`on-accent bg-accent`) → beyaz → beton (`bg-surface-2`). Sarı zeminde metin ink; `.on-accent .verify` ink renkte.
 
 **Buton varyantları:** `primary` (sarı), `secondary`, `dark`, `inverse`, `text`, `whatsapp`. Boyutlar md (48px) ve lg (56px). `ButtonLink` / `buttonClass` ile kullanılır.
 
-**Header:** beyaz zemin (2026-11-10, kullanıcı "site çok siyah oldu" dedi). Üst bilgi çubuğu `surface-2`. Aktif menü öğesi sarı zemin; paneller beyaz, karolar `surface-2` → hover sarı. Mobil menü de beyaz.
+**Header:** beyaz zemin (kullanıcı "site çok siyah oldu" dedi). 2026-11-10 yeniden yazıldı (eski mega panel "AI kokuyor, kasıyor" bulundu): üst bilgi çubuğu, arka plan karartması, sıralı karo animasyonu ve kaydırmada yükseklik değişimi **yok**. Sabit yükseklikte çubuk + altında 2px düz ink çizgi (kesik şerit denendi, tam genişlikte bozuk göründü). Grup adı doğrudan sayfasına gider; yanındaki ok düğmesi küçük asfalt açılır listeyi açar (üstte sarı şerit, sarı levha kareleri). Aktif öğe: altında sarı blok. Mobil menü beyaz: büyük grup adları + "+" ile açılan link çipleri, altta asfalt Ara/WhatsApp çubuğu.
+
+**Çerez paneli:** Mobilde ekranın altına oturan beyaz panel + hafif karartma (tıklamayı engellemez). Onay verilene kadar mobil Ara/WhatsApp çubuğu gizli (`html[data-consent="pending"] .sticky-cta`; bayrağı `layout.tsx` içindeki erken betik koyar, `ConsentProvider` kaldırır). Onaydan sonra çubuk alttan kayarak gelir. Masaüstünde sağ altta kart.
 
 **Koyu bölümler:** `on-ink` sınıfı eklenir; focus çizgisi sarı olur. İç sayfa başlıkları (`PageIntro`) asfalt zeminlidir.
 
 **Bölüm etiketleri (`Eyebrow`):** iki kısa şerit + geniş büyük harf. Ana sayfada numaralı kare (01–09; 05 = PhotoReel fotoğraf şeridi); iç sayfalarda numarasız (`number=""`). `tone`: light / dark / accent.
 
-**Hareket:** Yalnızca CSS: `.reveal` (scroll-driven), kayan bant, akan yol çizgisi, hover geçişleri. Hepsi `prefers-reduced-motion`'a uyar.
+**Hareket:** Yalnızca CSS/SMIL: `.reveal` (scroll-driven), kayan bant, akan yol çizgisi, araç, hero rotası, fotoğraf şeridi. Bu marka hareketleri `prefers-reduced-motion`'dan **bağımsız** oynar (2026-11-10: telefonlar pil tasarrufunda bu ayarı açıyor, site mobilde tamamen duruyordu). Hover/geçiş efektleri ve yumuşak kaydırma ayara uyar. Fotoğraf şeridinde durdurma düğmesi var; kayan bant yalnızca gerçek fare hover'ında duraklar.
 
 ## Teknik
 - Next.js 16.4, Turbopack, tüm sayfalar statik.

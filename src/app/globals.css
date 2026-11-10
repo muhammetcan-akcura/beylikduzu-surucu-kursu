@@ -129,6 +129,16 @@
     -webkit-text-size-adjust: 100%;
     scroll-behavior: smooth;
     scroll-padding-top: 6rem;
+    /* Yüzen header'ın kapladığı yükseklik: üst boşluk (0.75rem) + çubuk (4 / 4.5rem) */
+    --header-space: 4.75rem;
+    @media (width >= 64rem) {
+      --header-space: 5.25rem;
+    }
+  }
+  /* Header ilk bölümün üzerine biner; ilk bölüm kendi zeminini header'ın arkasına uzatır.
+     Şeffaf üst kenarlık zemini taşır (background-clip: border-box) ve içeriği aşağı iter. */
+  main > :first-child {
+    border-top: var(--header-space) solid transparent;
   }
   @media (prefers-reduced-motion: reduce) {
     html {
@@ -200,14 +210,16 @@
   border-color: var(--color-accent);
 }
 
-/* Scroll'da hafif görünme — JS yok, desteklenmiyorsa ya da hareket azaltılmışsa statik */
-@media (prefers-reduced-motion: no-preference) {
-  @supports (animation-timeline: view()) {
-    .reveal {
-      animation: reveal-up linear both;
-      animation-timeline: view();
-      animation-range: entry 0% entry 40%;
-    }
+/* Scroll'da hafif görünme — JS yok, desteklenmiyorsa statik.
+   Not (2026-11-10): Marka hareketleri (bu, kayan bant, yol, araç, hero rotası, fotoğraf şeridi)
+   işletim sisteminin "hareketi azalt" ayarından bağımsız oynar. Birçok telefon pil tasarrufunda
+   bu ayarı kendiliğinden açıyor ve site mobilde tamamen duruyordu. Hover/geçiş efektleri ve
+   yumuşak kaydırma hâlâ ayara uyar. Fotoğraf şeridinde duraklatma düğmesi var. */
+@supports (animation-timeline: view()) {
+  .reveal {
+    animation: reveal-up linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 40%;
   }
 }
 @keyframes reveal-up {
@@ -297,13 +309,15 @@ details[open] .faq-icon {
 }
 
 /* Yol çizgisi bandı: kesik şerit. Koyu zeminde sarı, sarı zeminde ink. */
+/* Desen ~92px'lik karolardan oluşur; `round` karoyu genişliğe tam sayıda sığacak kadar esnetir.
+   Böylece iki uçta yarım/kırpık çizgi kalmaz, şerit her ekranda simetrik durur. */
 @utility lane {
   height: 6px;
-  background: repeating-linear-gradient(90deg, var(--color-accent) 0 56px, transparent 56px 92px);
+  background: linear-gradient(90deg, transparent 0 19.5%, var(--color-accent) 19.5% 80.5%, transparent 80.5%) 0 0 / 92px 100% round;
 }
 @utility lane-ink {
   height: 6px;
-  background: repeating-linear-gradient(90deg, var(--color-ink) 0 56px, transparent 56px 92px);
+  background: linear-gradient(90deg, transparent 0 19.5%, var(--color-ink) 19.5% 80.5%, transparent 80.5%) 0 0 / 92px 100% round;
 }
 /* Bariyer şeridi (çok az kullanılır: kapanış ve 404) */
 @utility hatch {
@@ -334,32 +348,20 @@ details[open] .faq-icon {
   background: repeating-linear-gradient(90deg, var(--color-on-ink) 0 40px, transparent 40px 80px);
   background-size: 80px 100%;
 }
-@media (prefers-reduced-motion: no-preference) {
-  .marquee-track {
-    animation: marquee var(--marquee-duration, 38s) linear infinite;
-  }
-  .marquee:hover .marquee-track,
-  .reel:has(.reel-toggle input:checked) .marquee-track {
+.marquee-track {
+  animation: marquee var(--marquee-duration, 38s) linear infinite;
+}
+.reel:has(.reel-toggle input:checked) .marquee-track {
+  animation-play-state: paused;
+}
+/* Yalnızca gerçek fare hover'ında duraklat: dokunmatikte :hover dokunduktan sonra "yapışık" kalıp bandı durduruyordu */
+@media (hover: hover) and (pointer: fine) {
+  .marquee:hover .marquee-track {
     animation-play-state: paused;
   }
-  .road-flow {
-    animation: road 1.6s linear infinite;
-  }
 }
-/* Fotoğraf şeridi (PhotoReel): hareket azaltılmışsa elle kaydırılır, kopya satır ve düğme gizlenir */
-@media (prefers-reduced-motion: reduce) {
-  .reel-viewport {
-    overflow-x: auto;
-    padding-inline: var(--spacing-gutter);
-    scroll-snap-type: x proximity;
-  }
-  .reel-viewport li {
-    scroll-snap-align: start;
-  }
-  .reel-viewport [data-dup],
-  .reel-toggle {
-    display: none;
-  }
+.road-flow {
+  animation: road 1.6s linear infinite;
 }
 @keyframes marquee {
   to {
@@ -414,26 +416,29 @@ details[open] .faq-icon {
   }
 }
 
-/* Yol şeridindeki eğitim aracı (RoadStrip). Hareket yoksa solda park hâlinde. */
+/* Yol şeridindeki eğitim aracı (RoadStrip). Yalnızca yatayda kırp: araç kenardan çıkarken sayfa yana
+   taşmaz, ama yoldan yukarı taşan gövdesi görünür kalır (overflow-x: hidden dikeyi de keserdi). */
 .road {
   container-type: inline-size;
-}
-.car-drive {
-  transform: translateX(clamp(12px, 6cqw, 96px));
+  overflow-x: clip;
 }
 .car-wheel {
   transform-box: fill-box;
   transform-origin: center;
 }
-@media (prefers-reduced-motion: no-preference) {
+.car-drive {
+  animation: car-drive 16s linear infinite;
+}
+.car-wheel {
+  animation: icon-spin 0.55s linear infinite;
+}
+.car-bob {
+  animation: car-bob 0.9s ease-in-out infinite alternate;
+}
+/* Dar ekranda yol kısa: aynı hızda gitsin diye süre kısalır */
+@media (max-width: 639px) {
   .car-drive {
-    animation: car-drive 16s linear infinite;
-  }
-  .car-wheel {
-    animation: icon-spin 0.55s linear infinite;
-  }
-  .car-bob {
-    animation: car-bob 0.9s ease-in-out infinite alternate;
+    animation-duration: 9s;
   }
 }
 @keyframes car-drive {
@@ -455,14 +460,6 @@ details[open] .faq-icon {
 .route-static {
   display: none;
 }
-@media (prefers-reduced-motion: reduce) {
-  .route-moving {
-    display: none;
-  }
-  .route-static {
-    display: inline;
-  }
-}
 @media (max-width: 639px) {
   .route-label {
     display: none;
@@ -473,4 +470,63 @@ details[open] .faq-icon {
 html:has(#basvuru) .form-tab-global,
 html:not(:has(#basvuru)) .form-tab-local {
   display: none;
+}
+/* Form ekrandayken sekme gizlenir (gösterdiği şey zaten görünüyor, kartın kenarına binmesin).
+   JS'siz: #basvuru bir view-timeline yayar; sekmenin animasyonu yalnızca form görünürken etkin
+   (fill yok → dışarıda normal hâl). Desteklemeyen tarayıcıda sekme her zaman görünür. */
+html {
+  timeline-scope: --basvuru;
+}
+#basvuru {
+  view-timeline: --basvuru block;
+}
+@keyframes form-tab-hide {
+  from,
+  to {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
+.form-tab-local,
+.form-tab-global {
+  animation: form-tab-hide linear none;
+  animation-timeline: --basvuru;
+  animation-range: cover 0% cover 100%;
+}
+/* Çerez kartı sağ altta açıkken sekme onunla çakışmasın. */
+html[data-consent="pending"] .form-tab-local,
+html[data-consent="pending"] .form-tab-global {
+  display: none;
+}
+
+/* Mobil Ara/WhatsApp çubuğu: çerez tercihi verilene kadar aşağıda gizli, sonra kayarak gelir.
+   `data-consent="pending"` layout'taki erken betikten ve ConsentProvider'dan gelir. */
+.sticky-cta {
+  transition: transform 420ms var(--ease-out-soft), visibility 0s;
+}
+html[data-consent="pending"] .sticky-cta {
+  transform: translateY(110%);
+  visibility: hidden;
+  transition: transform 200ms ease-in, visibility 0s 200ms;
+}
+
+/* Çerez paneli giriş hareketi (mobilde alttan, masaüstünde hafif yukarı) */
+.cookie-sheet {
+  animation: cookie-in 380ms var(--ease-out-soft) both;
+}
+@keyframes cookie-in {
+  from {
+    transform: translateY(24px);
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sticky-cta,
+  html[data-consent="pending"] .sticky-cta {
+    transition: none;
+  }
+  .cookie-sheet {
+    animation: none;
+  }
 }

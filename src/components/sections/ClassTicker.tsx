@@ -3,7 +3,7 @@ import { site } from "@/config/site";
 /**
  * Sarı kayan bant (hero'nun hemen altı): verilen eğitimler + doğrulanabilir kısa bilgiler.
  * Tamamen dekoratif (her bilgi sayfada ayrıca var) → aria-hidden.
- * prefers-reduced-motion'da durur; hover'da duraklar.
+ * Cihaz ayarından bağımsız akar; yalnızca fareyle üzerine gelince duraklar.
  * Bilgiler site.ts'ten gelir; rakam/iddia uydurulmaz.
  */
 const items = [

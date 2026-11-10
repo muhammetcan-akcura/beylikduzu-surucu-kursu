@@ -28,7 +28,7 @@ export default function FaqPage() {
         breadcrumbs={crumbs}
       />
 
-      <div className="container-site grid gap-12 pb-section-md lg:grid-cols-12">
+      <div className="container-site grid gap-12 pt-section-sm pb-section-md lg:grid-cols-12">
         <nav aria-label="Konular" className="lg:col-span-3">
           <ul className="flex flex-wrap gap-2 lg:sticky lg:top-24 lg:flex-col lg:gap-0">
             {faqGroups.map((g) => (

@@ -1,7 +1,6 @@
 import { site } from "@/config/site";
 import { Eyebrow } from "@/components/ui/Typography";
 import { Photo } from "@/components/ui/Photo";
-import { RichText } from "@/components/ui/RichText";
 
 /** Eğitim ortamı ve araçlar: araç "ruhsat" satırları + kesik köşeli görsel mozaiği */
 export function FleetSection({ number = "06" }: { number?: string }) {
@@ -29,9 +28,10 @@ export function FleetSection({ number = "06" }: { number?: string }) {
             <tbody>
               {site.vehicles.map((v) => (
                 <tr key={v.model}>
-                  <th scope="row" className="rounded-l-card bg-ink py-4 pl-5 text-on-ink">
+                  {/* lang="en": büyük harfte "HYUNDAİ İ10" olmasın (tr kuralı i → İ) */}
+                  <th scope="row" lang="en" className="rounded-l-card bg-ink py-4 pl-5 text-on-ink">
                     <span className="block text-eyebrow text-on-ink-muted">{v.make}</span>
-                    <span className="font-display text-[2rem] leading-none text-accent">{v.model}</span>
+                    <span className="font-display text-[2rem] leading-none text-accent normal-case">{v.model}</span>
                   </th>
                   <td className="rounded-r-card bg-ink py-4 pr-5 text-right">
                     <span className="inline-flex flex-wrap justify-end gap-1.5">
@@ -46,9 +46,7 @@ export function FleetSection({ number = "06" }: { number?: string }) {
               ))}
             </tbody>
           </table>
-          <p className="mt-3 text-caption text-muted">
-            <RichText text="[DOĞRULA: model bazında vites tipi]" />
-          </p>
+          <p className="mt-3 text-caption text-muted">Her modelde hem manuel hem otomatik vitesli eğitim aracımız var.</p>
         </div>
 
         <div className="grid gap-3 sm:grid-cols-5 lg:col-span-7">

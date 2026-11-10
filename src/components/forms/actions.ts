@@ -3,7 +3,7 @@
 import { getLeadNotifier } from "@/lib/email";
 import { classOptions, normalizePhone, type FormState } from "./form-schema";
 
-const MIN_FILL_MS = 2500; // bu süreden hızlı gönderimler bot kabul edilir
+const MIN_FILL_MS = 2500; // ilk etkileşimden bu yana bundan hızlı gönderimler "şüpheli" işaretlenir (atılmaz)
 
 export async function submitApplication(_prev: FormState, formData: FormData): Promise<FormState> {
   const name = String(formData.get("name") ?? "").trim();
@@ -17,8 +17,8 @@ export async function submitApplication(_prev: FormState, formData: FormData): P
 
   const values = { name, phone: phoneRaw, licenseClass, message };
 
-  // Spam: honeypot doluysa veya form insan için fazla hızlı doldurulduysa sessizce "başarılı" dön.
-  if (honeypot || (startedAt && Date.now() - startedAt < MIN_FILL_MS)) {
+  // Spam: yalnızca honeypot doluysa sessizce "başarılı" dön. İnsan bu alanı göremez.
+  if (honeypot) {
     return { status: "success", message: "Teşekkürler. En kısa sürede sizi arayacağız." };
   }
 
@@ -35,6 +35,9 @@ export async function submitApplication(_prev: FormState, formData: FormData): P
     return { status: "error", message: "Formda düzeltilmesi gereken alanlar var.", errors, values };
   }
 
+  // Hızlı gönderim (otomatik doldurma olabilir) atılmaz; işletmeye "şüpheli" notuyla iletilir.
+  const fast = startedAt > 0 && Date.now() - startedAt < MIN_FILL_MS;
+
   const result = await getLeadNotifier().send({
     name,
     phone: phone!,
@@ -42,6 +45,7 @@ export async function submitApplication(_prev: FormState, formData: FormData): P
     message: message || undefined,
     submittedAt: new Date().toLocaleString("tr-TR", { timeZone: "Europe/Istanbul" }),
     sourcePath,
+    suspect: fast ? "çok hızlı gönderildi (bot olabilir)" : undefined,
   });
 
   if (!result.ok) {

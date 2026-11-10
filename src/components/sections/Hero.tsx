@@ -4,13 +4,15 @@ import { site, telHref, whatsappHref } from "@/config/site";
 import { ButtonLink } from "@/components/ui/Button";
 import { Eyebrow, RoadStrip } from "@/components/ui/Typography";
 import { HeroRoute } from "./HeroRoute";
+import { InlineArrowLabel } from "@/components/ui/InlineArrowLabel";
 
 /**
  * "Rota" hero: başlığın söylediğini görsel gösterir — kayıttan ehliyete giden yol, adım adım.
  * Sağda (mobilde başlığın altında) şematik rota haritası, eğitim aracı adımları tek tek geçer (HeroRoute).
  * Fotoğraf yok: LCP öğesi başlık metnidir, ilk boyama hızlıdır. Fotoğraflar alt bölümlerde.
  *
- * Mobil: başlık → rota → metin → bilgiler. CTA'lar GİZLİ; alttaki sabit çubuk (StickyCta) aynı işi görür.
+ * Mobil: başlık → Ara/WhatsApp → rota → metin → bilgiler. CTA'lar ilk ekranda, çünkü sabit alt çubuk
+ * (StickyCta) çerez onayı verilene kadar gizli (2026-11-10 denetimi K4).
  * Masaüstü (lg+): iki kolon. Başlık boyutu kolon genişliğine bağlı (13cqi): en uzun kelime
  * "BEYLİKDÜZÜ'NDE" her ekranda kolona tam sığar.
  * Altta akan yol şeridi (RoadStrip, araçlı). Alt boşluk ≥56px: araç şeridin üstüne taşar.
@@ -36,10 +38,20 @@ export function Hero() {
           <Eyebrow tone="dark">{h.eyebrow}</Eyebrow>
           <h1
             id="hero-title"
-            className="mt-6 max-w-[14ch] font-display text-display sm:max-w-none lg:text-[13cqi] lg:leading-[0.88]"
+            className="mt-6 max-w-[14ch] font-display text-display max-lg:[font-size:min(var(--text-display),13.4cqi)]! sm:max-w-none lg:text-[13cqi] lg:leading-[0.88]"
           >
             {head} {tail && <span className="text-accent">{tail}</span>}
           </h1>
+
+          {/* Mobil: ilk ekranda arama/WhatsApp. Sabit alt çubuk çerez onayına kadar gizli olduğu için gerekli. */}
+          <div className="mt-7 grid gap-3 min-[22.5rem]:grid-cols-2 lg:hidden">
+            <ButtonLink href={telHref()} size="lg" trackLocation="hero" icon="phone" className="w-full">
+              {h.primaryCta}
+            </ButtonLink>
+            <ButtonLink href={whatsappHref()} variant="whatsapp" size="lg" trackLocation="hero" className="w-full">
+              {h.whatsappCta}
+            </ButtonLink>
+          </div>
         </div>
 
         {/* 2 — Rota: mobilde başlığın altında, masaüstünde sağda iki satır boyunca, dikeyde ortalı */}
@@ -51,7 +63,7 @@ export function Hero() {
         <div className="mt-8 flex flex-col lg:col-span-6 lg:row-start-2">
           <p className="max-w-md text-lead text-on-ink-muted">{h.lead}</p>
 
-          {/* Yalnızca masaüstü: mobilde sabit alt çubuk aynı işi görüyor */}
+          {/* Masaüstü CTA'ları. Mobil karşılığı başlığın hemen altında. */}
           <div className="mt-7 hidden flex-wrap items-center gap-3 lg:flex">
             <ButtonLink href={telHref()} size="lg" trackLocation="hero" icon="phone" arrow>
               {h.primaryCta}
@@ -81,10 +93,9 @@ export function Hero() {
           </dl>
           <a
             href="#surec"
-            className="mt-5 inline-flex min-h-11 items-center gap-2 self-start text-button text-on-ink underline decoration-accent decoration-[3px] underline-offset-[7px] hover:text-accent"
+            className="mt-5 inline-block self-start py-2.5 text-button leading-[1.9] text-on-ink hover:text-accent"
           >
-            {h.processCta}
-            <Icon name="arrow-down" className="size-4" />
+            <InlineArrowLabel text={h.processCta} icon="arrow-down" lineClass="decoration-accent decoration-[3px]" />
           </a>
         </div>
       </div>

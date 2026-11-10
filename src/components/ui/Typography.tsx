@@ -101,7 +101,7 @@ export function PageIntro({
 
 /**
  * Akan yol şeridi: asfalt bant + ortada kesik beyaz çizgi + yolda giden eğitim aracı.
- * Araç soldan sağa geçer, tekerlekler döner; reduced-motion'da araç solda park hâlinde durur. Dekoratif.
+ * Araç soldan sağa geçer, tekerlekler döner (cihazın hareket ayarından bağımsız). Dekoratif.
  */
 export function RoadStrip({ className = "", car = true }: { className?: string; car?: boolean }) {
   return (

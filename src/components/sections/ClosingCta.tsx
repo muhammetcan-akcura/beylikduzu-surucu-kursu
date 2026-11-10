@@ -23,18 +23,19 @@ export function ClosingCta({
     <section id={id} aria-labelledby={`${id}-title`} className="on-accent relative bg-accent text-ink">
       <div aria-hidden="true" className="hatch h-3" />
       <div className="container-site grid gap-12 py-section-md lg:grid-cols-12 lg:gap-10">
-        <div className="lg:col-span-7">
+        {/* @container: başlık kolon genişliğini aşamaz (uzun tek kelime, örn. "BAŞLAYABİLİRSİNİZ?", 360px'te taşıyordu) */}
+        <div className="@container min-w-0 lg:col-span-7">
           <Eyebrow number={number || undefined} tone="accent">
             {home.closing.eyebrow}
           </Eyebrow>
-          <h2 id={`${id}-title`} className="mt-6 font-display text-h1">
+          <h2 id={`${id}-title`} className="mt-6 font-display text-h1 [font-size:min(var(--text-h1),10.5cqi)]!">
             {title}
           </h2>
           <p className="mt-6 max-w-lg text-lead">{body}</p>
           <a
             href={telHref()}
             data-track-location="closing"
-            className="mt-10 block font-display text-[clamp(3rem,1.8rem+6vw,7rem)] leading-[0.85] tabular-nums text-ink decoration-ink decoration-4 underline-offset-[10px] hover:underline"
+            className="mt-10 block py-1.5 font-display text-[clamp(3rem,1.8rem+6vw,7rem)] leading-[0.85] tabular-nums text-ink decoration-ink decoration-4 underline-offset-[10px] hover:underline"
           >
             {site.phone.display}
           </a>

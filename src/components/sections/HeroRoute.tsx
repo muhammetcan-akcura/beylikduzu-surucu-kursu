@@ -9,8 +9,8 @@ import { BADGE_MARK_TRANSFORM, BADGE_PATH, BADGE_VIEWBOX, BRAND_HEX, MARK_PATH }
  * 04'ün yanındaki park çizgili blok "önce eğitim alanı" adımıdır (home.value ile aynı bilgi).
  *
  * Gerçek harita DEĞİLDİR (ölçeksiz, şematik); altında bu yazar.
- * Hareket: SVG SMIL (viewBox ile ölçeklenir). prefers-reduced-motion'da hareketli katman gizlenir,
- * yerine rotanın tamamı çizili, araç başlangıçta park hâlinde statik katman görünür (globals.css `.route-*`).
+ * Hareket: SVG SMIL (viewBox ile ölçeklenir), cihazın hareket ayarından bağımsız oynar.
+ * Statik katman (rota tam çizili, araç park hâlinde; globals.css `.route-*`) şu an gizli, yedek olarak duruyor.
  */
 
 const W = 640;

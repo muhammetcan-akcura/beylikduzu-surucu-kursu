@@ -1,5 +1,7 @@
 /**
- * Görsel kayıtları. Şu an tümü AÇIKÇA PLACEHOLDER (SVG).
+ * Görsel kayıtları. `mirror` dışındakiler AÇIKÇA PLACEHOLDER (SVG).
+ * 2026-11-10 denetimi: eski .jpg kareler yabancı/üretilmiş görsellerdi (DRIVE İSTANBUL tabelası, İngiliz L plakası,
+ * VW/Yamaha logoları); public/'ten silindi (git geçmişinde duruyor). `mirror` kurum iddiası taşımadığı için kaldı.
  * Gerçek çekim geldiğinde: dosyayı /public/images/ altına koyun, `src`, `width`, `height` güncelleyin,
  * `placeholder: false` yapın. Çekim listesi: docs/fotograf-brifingi.md
  */
@@ -16,11 +18,11 @@ export type MediaItem = {
 
 export const media = {
   hero: {
-    src: "/images/hero.jpg",
-    width: 1376,
-    height: 768,
-    alt: "Eğitim aracının direksiyonunda eğitmen ve öğrenci, ön camdan Beylikdüzü'nde bir cadde görünüyor",
-    placeholder: false,
+    src: "/images/placeholder-hero.svg",
+    width: 1600,
+    height: 900,
+    alt: "Yer tutucu görsel: direksiyon başında eğitmen ve öğrenci (gerçek çekim bekleniyor)",
+    placeholder: true,
     brief: "Kare 01 · Direksiyon başında eğitmen ve öğrenci, yandan, gün ışığı",
   },
   mirror: {
@@ -32,43 +34,43 @@ export const media = {
     brief: "Kare 02 · Yan ayna detayı, sığ alan derinliği",
   },
   classB: {
-    src: "/images/car.jpg",
+    src: "/images/placeholder-car.svg",
     width: 1200,
-    height: 896,
-    alt: "Kursun Hyundai eğitim aracı, yandan görünüm",
-    placeholder: false,
+    height: 800,
+    alt: "Yer tutucu görsel: eğitim aracı (gerçek çekim bekleniyor)",
+    placeholder: true,
     brief: "Kare 05 · Eğitim aracı, yandan, sade arka plan",
   },
   classMoto: {
-    src: "/images/moto.jpg",
+    src: "/images/placeholder-moto.svg",
     width: 1200,
-    height: 896,
-    alt: "Eğitim alanında koruyucu ekipmanlı öğrenci motosikletle slalom yapıyor",
-    placeholder: false,
+    height: 800,
+    alt: "Yer tutucu görsel: eğitim alanında motosiklet (gerçek çekim bekleniyor)",
+    placeholder: true,
     brief: "Kare 06 · Eğitim alanında motosiklet, slalom dubaları",
   },
   facade: {
-    src: "/images/facade.jpg",
+    src: "/images/placeholder-facade.svg",
     width: 1200,
-    height: 896,
-    alt: "Beylik Sürücü Kursu'nun Cumhuriyet Mahallesi'ndeki giriş cephesi",
-    placeholder: false,
+    height: 900,
+    alt: "Yer tutucu görsel: kurum cephesi ve tabela (gerçek çekim bekleniyor)",
+    placeholder: true,
     brief: "Kare 03 · Kurum cephesi ve tabela, karşıdan, öğleden sonra",
   },
   gear: {
-    src: "/images/gear.jpg",
+    src: "/images/placeholder-gear.svg",
     width: 1200,
-    height: 896,
-    alt: "Otomatik vites kolu ve orta konsol detayı",
-    placeholder: false,
+    height: 800,
+    alt: "Yer tutucu görsel: vites kolu detayı (gerçek çekim bekleniyor)",
+    placeholder: true,
     brief: "Kare 04 · Vites kolu detayı (manuel + otomatik ayrı kareler)",
   },
   classroom: {
-    src: "/images/classroom.jpg",
+    src: "/images/placeholder-classroom.svg",
     width: 1200,
-    height: 896,
-    alt: "Teorik ders sınıfı, öğrenciler eğitmeni dinliyor",
-    placeholder: false,
+    height: 800,
+    alt: "Yer tutucu görsel: teorik derslik (gerçek çekim bekleniyor)",
+    placeholder: true,
     brief: "Kare 07 · Teorik derslik, doğal ışık, arkadan geniş kadraj",
   },
 } satisfies Record<string, MediaItem>;

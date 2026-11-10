@@ -7,7 +7,7 @@ import type { MediaKey } from "@/content/media";
  * Akış: yavaş akan fotoğraf şeridi. Kartlar kesik köşeli (levha dili),
  * altında asfalt şerit + kısa etiket (açık zeminde ince sarı çizgi yasak). JS yok:
  *  - Durdur/oynat: gizli checkbox + :has() (WCAG 2.2.2 — hareket durdurulabilir). Hover'da da durur.
- *  - prefers-reduced-motion: animasyon yok, şerit elle kaydırılır, kopya satır gizlenir.
+ *  - Hareket, cihazın "hareketi azalt" ayarından bağımsız oynar (bkz. globals.css); durdurma düğmesi her zaman var.
  * Döngü için satır iki kez basılır; ikinci kopya aria-hidden.
  */
 const frames: { name: MediaKey; label: string; wide?: boolean }[] = [

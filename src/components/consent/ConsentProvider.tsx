@@ -1,10 +1,10 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { CONSENT_STORAGE_KEY as STORAGE_KEY } from "./consent-key";
 
 export type ConsentState = { analytics: boolean; maps: boolean; decided: boolean };
 
-const STORAGE_KEY = "bsk-consent-v1";
 const defaultState: ConsentState = { analytics: false, maps: false, decided: false };
 
 type Ctx = {
@@ -54,6 +54,14 @@ export function ConsentProvider({ children }: { children: React.ReactNode }) {
   }, [consent.analytics, setConsent]);
 
   const reopen = useCallback(() => setBannerOpen(true), []);
+
+  // Banner açıkken mobil Ara/WhatsApp çubuğu gizli (globals.css `.sticky-cta`); kapanınca kayarak gelir.
+  useEffect(() => {
+    if (!ready) return;
+    const el = document.documentElement;
+    if (bannerOpen) el.dataset.consent = "pending";
+    else delete el.dataset.consent;
+  }, [ready, bannerOpen]);
 
   const value = useMemo(
     () => ({ consent, ready, bannerOpen, setConsent, allowMaps, reopen }),

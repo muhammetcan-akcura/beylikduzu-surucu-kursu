@@ -8,7 +8,7 @@ import { MARK_BOWLS, MARK_DASHES, MARK_STROKE } from "./mark";
  * arkaya doğru yükselen çapraz gövde kırımı, ince yana sarılan farlar ve stoplar, çift kollu jant.
  * Üretici amblemi/yazısı ve plaka bilerek çizilmedi (tescilli marka / sahte plaka olmasın).
  * Kapılarda sarı kurum şeridi + logo + "BEYLİK SÜRÜCÜ KURSU", tavanda "SÜRÜCÜ KURSU" levhası.
- * Dekoratiftir (aria-hidden). Tekerlek dönüşü `.car-wheel` (globals.css); reduced-motion'da durur.
+ * Dekoratiftir (aria-hidden). Tekerlek dönüşü `.car-wheel` (globals.css).
  *
  * viewBox 300 × 132 · zemin y = 124 · arka aks x ≈ 60, ön aks x ≈ 232.4.
  */

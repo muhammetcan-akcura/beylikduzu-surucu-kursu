@@ -22,7 +22,7 @@ export function LegalPage({
           { name: title, path },
         ]}
       />
-      <div className="container-site pb-section-md">
+      <div className="container-site pt-section-sm pb-section-md">
         <div className="max-w-prose">
           <p role="note" className="rounded-field border border-dashed border-accent-ink bg-accent/10 px-4 py-3 text-small text-accent-ink">
             <strong>Taslak metin:</strong> Bu metin hukukçu tarafından kontrol edilmelidir. Yayından önce veri sorumlusu

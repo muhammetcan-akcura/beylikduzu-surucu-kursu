@@ -59,7 +59,8 @@ export type SiteConfig = {
   social: SocialLinks;
 };
 
-const domain = "beyliksurucukursu.com";
+// Geçici alan adı (Netlify). Kalıcı alan adı alınınca burayı ve .env.example’ı güncelleyin.
+const domain = "beyliksurucukursu.netlify.app";
 
 export const site: SiteConfig = {
   legalName: "Beylik Sürücü Kursu",
@@ -91,7 +92,7 @@ export const site: SiteConfig = {
   licenseClasses: ["B", "A1", "A2", "A"],
   hasAutomaticTransmission: true,
   vehicles: [
-    // [DOĞRULA: model bazında vites tipi] — kullanıcı "manuel ve otomatik ikisi de var" dedi.
+    // Kullanıcı (2026-11-10): her modelin hem manuel hem otomatik aracı var.
     { make: "Hyundai", model: "i10", transmission: ["manuel", "otomatik"] },
     { make: "Hyundai", model: "i20", transmission: ["manuel", "otomatik"] },
     { make: "Hyundai", model: "i30", transmission: ["manuel", "otomatik"] },

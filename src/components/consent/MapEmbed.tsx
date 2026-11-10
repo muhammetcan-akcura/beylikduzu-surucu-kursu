@@ -3,14 +3,14 @@
 import { buttonClass, ButtonInner } from "@/components/ui/Button";
 import { useConsent } from "./ConsentProvider";
 
-type Props = { src: string; title: string; address: string; directionsHref: string };
+type Props = { src: string; title: string; address: string };
 
 /**
  * Google Haritalar çerez bırakır → onaydan önce yalnızca statik bir yüzey gösterilir.
  * Yüzey sitenin yol diliyle çizilir: asfalt yollar, kesik orta çizgi, sarı güzergâh ve rozet içinde pin.
  * "Haritayı yükle" butonu harita iznini verir ve iframe'i yükler.
  */
-export function MapEmbed({ src, title, address, directionsHref }: Props) {
+export function MapEmbed({ src, title, address }: Props) {
   const { consent, ready, allowMaps } = useConsent();
   const allowed = ready && consent.maps;
 
@@ -50,22 +50,12 @@ export function MapEmbed({ src, title, address, directionsHref }: Props) {
           <p className="relative max-w-xs self-start rounded-control bg-ink/90 px-4 py-3 text-small font-medium">{address}</p>
 
           <div className="relative">
-            <div className="flex flex-wrap gap-2">
-              <button type="button" onClick={allowMaps} className={buttonClass("primary", "md", "")}>
-                <ButtonInner variant="primary" icon="map-pin">
-                  Haritayı yükle
-                </ButtonInner>
-              </button>
-              <a
-                href={directionsHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                data-track-location="map-placeholder"
-                className={buttonClass("inverse", "md", "bg-ink/80")}
-              >
-                <ButtonInner variant="inverse">Yol tarifi al</ButtonInner>
-              </a>
-            </div>
+            {/* Yol tarifi düğmesi burada değil, haritanın yanındaki sütunda: onaydan önce ve sonra aynı yerde. */}
+            <button type="button" onClick={allowMaps} className={buttonClass("primary", "md", "")}>
+              <ButtonInner variant="primary" icon="map-pin">
+                Haritayı yükle
+              </ButtonInner>
+            </button>
             <p className="mt-3 max-w-sm text-caption text-on-ink-muted">
               Harita Google tarafından sunulur ve yüklendiğinde çerez bırakabilir.
             </p>

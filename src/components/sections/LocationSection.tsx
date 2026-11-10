@@ -30,6 +30,7 @@ export function LocationSection({
   showDetails?: boolean;
   aside?: ReactNode;
 }) {
+  const visibleTransit = transitNotes.filter((t) => !t.text.includes("[DOĞRULA"));
   const H = headingLevel;
   const Sub = headingLevel === "h2" ? "h3" : "h4";
 
@@ -52,7 +53,7 @@ export function LocationSection({
         <a
           href={telHref()}
           data-track-location="location"
-          className="font-display text-[2rem] leading-none text-accent tabular-nums underline-offset-[6px] hover:underline"
+          className="inline-flex min-h-11 items-center font-display text-[2rem] leading-none text-accent tabular-nums underline-offset-[6px] hover:underline"
         >
           {site.phone.display}
         </a>
@@ -92,7 +93,6 @@ export function LocationSection({
                   src={mapsEmbedSrc()}
                   title={`${site.brandName} konumu, Google Haritalar`}
                   address={fullAddress()}
-                  directionsHref={mapsDirectionsHref()}
                 />
               </div>
             </div>
@@ -133,10 +133,12 @@ export function LocationSection({
           </div>
         </div>
 
+        {/* Bilgisi gelmemiş (yalnızca [DOĞRULA]) ulaşım kartları gösterilmez: boş işletme alanı sitede görünmez. */}
+        {visibleTransit.length > 0 && (
         <div className="mt-section-sm">
           <Sub className="font-display text-[1.75rem] leading-none">Nasıl gelinir</Sub>
           <ul className="mt-6 grid gap-3 sm:grid-cols-3">
-            {transitNotes.map((t) => (
+            {visibleTransit.map((t) => (
               <li key={t.label} className="reveal rounded-card bg-ink-2 p-6">
                 <span
                   aria-hidden="true"
@@ -152,6 +154,7 @@ export function LocationSection({
             ))}
           </ul>
         </div>
+        )}
       </div>
       <RoadStrip car={false} />
     </section>

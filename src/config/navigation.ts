@@ -62,7 +62,7 @@ export const mainNav: NavGroup[] = [
     links: [
       { label: "Hakkımızda", href: "/hakkimizda", desc: "Hikâyemiz ve ilkelerimiz" },
       { label: "Eğitim ortamı", href: "/hakkimizda#ortam", desc: "Derslik, eğitim alanı, araçlar" },
-      { label: "Konum ve ulaşım", href: "/hakkimizda#konum", desc: "Harita ve yol tarifi" },
+      { label: "Konum ve ulaşım", href: "/iletisim#konum", desc: "Harita ve yol tarifi" },
       { label: "Kurstan kareler", href: "/#kareler", desc: "Fotoğraflar" },
     ],
   },

@@ -7,6 +7,8 @@ export type Lead = {
   message?: string;
   submittedAt: string;
   sourcePath?: string;
+  /** Bot şüphesi notu; varsa e-posta konusunda belirtilir. */
+  suspect?: string;
 };
 
 /** Soyut e-posta servisi: sağlayıcı değiştirmek için yalnızca yeni bir uygulama yazılır. */
@@ -25,6 +27,7 @@ function renderLead(lead: Lead) {
     ["Mesaj", lead.message || "—"],
     ["Tarih", lead.submittedAt],
     ["Sayfa", lead.sourcePath || "—"],
+    ...(lead.suspect ? [["Not", `Şüpheli: ${lead.suspect}`] as [string, string]] : []),
   ];
   const text = rows.map(([k, v]) => `${k}: ${v}`).join("\n");
   const html = `<table cellpadding="6" style="font-family:Arial,sans-serif;font-size:15px">${rows
@@ -49,7 +52,7 @@ class ResendNotifier implements LeadNotifier {
         body: JSON.stringify({
           from: this.from,
           to: [this.to],
-          subject: `Yeni başvuru: ${lead.name} (${lead.licenseClass})`,
+          subject: `${lead.suspect ? "[Şüpheli] " : ""}Yeni başvuru: ${lead.name} (${lead.licenseClass})`,
           text,
           html,
         }),
@@ -63,10 +66,17 @@ class ResendNotifier implements LeadNotifier {
   }
 }
 
-/** Anahtar yoksa (geliştirme / demo): başvuruyu sunucu loguna yazar. */
+/**
+ * Anahtar yoksa: başvuruyu sunucu loguna yazar.
+ * Geliştirmede başarılı sayılır. Production'da HATA döner: kullanıcı "alındı" görüp başvuru kaybolmasın;
+ * formdaki hata mesajı onu telefona / WhatsApp'a yönlendirir.
+ */
 class ConsoleNotifier implements LeadNotifier {
   async send(lead: Lead) {
     console.info("[başvuru] RESEND_API_KEY tanımlı değil, e-posta gönderilmedi:\n" + renderLead(lead).text);
+    if (process.env.NODE_ENV === "production") {
+      return { ok: false as const, error: "RESEND_API_KEY / LEAD_FROM_EMAIL tanımlı değil" };
+    }
     return { ok: true as const };
   }
 }

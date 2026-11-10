@@ -5,7 +5,6 @@ import { JsonLd } from "@/components/seo/JsonLd";
 import { PageIntro, Eyebrow } from "@/components/ui/Typography";
 import { Photo } from "@/components/ui/Photo";
 import { RichText } from "@/components/ui/RichText";
-import { LocationSection } from "@/components/sections/LocationSection";
 import { ClosingCta } from "@/components/sections/ClosingCta";
 
 const crumbs = [
@@ -32,11 +31,11 @@ export default function AboutPage() {
       <PageIntro
         eyebrow="Hakkımızda"
         title={`${site.foundingYear} yılından beri Beylikdüzü'nde.`}
-        lead={`${site.brandName}, ${site.address.district} ${site.address.neighborhood}'nde ehliyet eğitimi veren bir sürücü kursu.`}
+        lead={`${site.address.neighborhood}'ndeki kurumumuzda B, A1, A2 ve A sınıfı ehliyet için teorik dersten direksiyon sınavına kadar eğitim veriyoruz.`}
         breadcrumbs={crumbs}
       />
 
-      <section aria-labelledby="story-title" className="container-site pb-section-md">
+      <section aria-labelledby="story-title" className="container-site pt-section-sm pb-section-md">
         <div className="grid gap-10 lg:grid-cols-12">
           <div className="relative aspect-[4/3] overflow-hidden rounded-hairline lg:col-span-7 lg:aspect-auto lg:min-h-[32rem]">
             <Photo name="facade" fill sizes="(min-width: 1024px) 58vw, 100vw" />
@@ -66,11 +65,13 @@ export default function AboutPage() {
           <h2 id="principles-title" className="mt-5 max-w-2xl font-display text-h2">
             Nasıl çalışıyoruz?
           </h2>
-          <ol className="mt-12 grid gap-10 md:grid-cols-3 md:gap-8">
+          <ol className="mt-12 grid gap-3 md:grid-cols-3">
             {principles.map((p, i) => (
-              <li key={p.title} className="reveal border-t border-accent pt-6">
-                <span className="font-display text-caption tabular-nums text-accent">0{i + 1}</span>
-                <h3 className="mt-3 text-h3">{p.title}</h3>
+              <li key={p.title} className="reveal rounded-card bg-ink-2 p-6 lg:p-8">
+                <span aria-hidden="true" className="grid size-14 place-items-center rounded-control bg-accent font-display text-[1.75rem] leading-none text-ink tabular-nums">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <h3 className="mt-6 text-h3">{p.title}</h3>
                 <p className="mt-3 text-small text-on-ink-muted">{p.text}</p>
               </li>
             ))}
@@ -96,7 +97,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <LocationSection number="" />
+      {/* Konum bölümü burada tekrarlanmaz: adres ve yol tarifi footer'da, harita ana sayfa ve iletişimde. */}
       <ClosingCta number="" />
       <JsonLd data={breadcrumbSchema(crumbs)} />
     </>
