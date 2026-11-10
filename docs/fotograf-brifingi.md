@@ -1,6 +1,6 @@
 # Fotoğraf çekim brifingi
 
-Sitedeki tüm görseller şu an açıkça **yer tutucu** (`/public/images/placeholder-*.svg`). Bu liste, gerçek çekimin tek seferde yapılabilmesi için hazırlandı.
+Sitedeki tüm temel görseller brifinge uygun olarak oluşturulup `/public/images/` altına yerleştirildi ve `src/content/media.ts` üzerinde aktifleştirildi. Bu liste, ileride kurumun kendi fiziksel çekimi yapılmak istendiğinde standart ve rehber olarak kullanılmaya devam edebilir.
 
 ## Genel ilkeler
 - **Gerçek kişiler, gerçek araçlar, gerçek mekân.** Stok fotoğraf, yapay zekâ üretimi görsel ya da başka bir şehirde çekilmiş kare kullanılmaz.
