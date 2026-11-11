@@ -21,8 +21,8 @@ export function pageMetadata({ title, absoluteTitle, description, path, noindex,
     title: absoluteTitle ? { absolute: absoluteTitle } : title,
     description,
     alternates: { canonical },
-    // Demo süresince tüm site arama motorlarına kapalı: `site.isDemo` false olunca kendiliğinden açılır.
-    robots: noindex || site.isDemo ? { index: false, follow: false } : { index: true, follow: true },
+    // Kullanıcı (2026-11-11): demo süresince de indekslensin. Yalnızca `noindex: true` verilen sayfa (styleguide) kapalı.
+    robots: noindex ? { index: false, follow: false } : { index: true, follow: true },
     openGraph: {
       type: "website",
       locale: "tr_TR",
